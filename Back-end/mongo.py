@@ -30,7 +30,7 @@ def register():
         request.get_json()['password']).decode('utf-8')
     created = datetime.utcnow()
 
-    user_id = users.insert_one({
+    user_id = users.insert({
         'first_name': first_name,
         'last_name': last_name,
         'email': email,
