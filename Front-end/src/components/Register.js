@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { register } from "./UserFunctions";
+import { register, login } from "./UserFunctions";
 
 class Register extends Component {
   constructor() {
@@ -9,6 +9,7 @@ class Register extends Component {
       last_name: "",
       email: "",
       password: "",
+      success: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -30,7 +31,14 @@ class Register extends Component {
     };
 
     register(newUser).then((res) => {
-      this.props.history.push(`/login`); //to Change with Autologin
+      this.setState({ success: res.data.message });
+      const user = {
+        email: this.state.email,
+        password: this.state.password,
+      };
+      login(user).then((res) => {
+        this.props.history.push(`/profile`);
+      });
     });
   }
 
@@ -93,6 +101,9 @@ class Register extends Component {
                 Register
               </button>
             </form>
+            <div class="alert alert-light" role="alert">
+              {this.state.success}
+            </div>
           </div>
         </div>
       </div>

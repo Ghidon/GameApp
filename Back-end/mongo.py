@@ -97,15 +97,14 @@ def login():
                 'last_name': response['last_name'],
                 'email': response['email']
             })
-            result = jsonify(message="Login Succeeded!",
-                             access_token=access_token), 201
+            result = jsonify(
+                {'token': access_token, "result": "Login Successful"})
         else:
-            result = jsonify(message="Wrong Email or Password"), 401
+            result = jsonify(
+                {"error": "Invalid password"})
     else:
         result = jsonify({"result": "No results found"})
     return result
-
-##############
 
 
 if __name__ == '__main__':
