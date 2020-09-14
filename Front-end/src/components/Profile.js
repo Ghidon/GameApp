@@ -15,13 +15,17 @@ class Profile extends Component {
     // to add check if token
     // if token then proceed to regular route
     // else proceed to show error route / login page
-    const token = localStorage.usertoken;
-    const decoded = jwt_decode(token);
-    this.setState({
-      first_name: decoded.identity.first_name,
-      last_name: decoded.identity.last_name,
-      email: decoded.identity.email,
-    });
+    if (localStorage.usertoken) {
+      const token = localStorage.usertoken;
+      const decoded = jwt_decode(token);
+      this.setState({
+        first_name: decoded.identity.first_name,
+        last_name: decoded.identity.last_name,
+        email: decoded.identity.email,
+      });
+    } else {
+      this.props.history.push(`/login`);
+    }
   }
 
   render() {
