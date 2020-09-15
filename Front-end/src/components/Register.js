@@ -9,7 +9,9 @@ class Register extends Component {
       last_name: "",
       email: "",
       password: "",
-      success: "",
+      error: false,
+      messageError: "",
+      statusError: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -18,6 +20,16 @@ class Register extends Component {
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+  showErrorMessage(data, status) {
+    this.setState({
+      error: true,
+      messageError: data.message,
+      statusError: status,
+    });
+  }
+  hideErrorMessage() {
+    this.setState({ error: false, messageError: "", statusError: "" });
   }
 
   onSubmit(e) {
@@ -30,19 +42,28 @@ class Register extends Component {
       password: this.state.password,
     };
 
-    register(newUser).then((res) => {
-      this.setState({ success: res.data.message });
-      const user = {
-        email: this.state.email,
-        password: this.state.password,
-      };
-      login(user).then((res) => {
-        this.props.history.push(`/profile`);
-      });
+    register(
+      newUser,
+      this.showErrorMessage.bind(this),
+      this.hideErrorMessage.bind(this)
+    ).then((res) => {
+      if (res === undefined) {
+        console.log("error: Email already registered");
+      } else {
+        const user = {
+          email: this.state.email,
+          password: this.state.password,
+        };
+        login(user).then((res) => {
+          this.props.history.push(`/profile`);
+        });
+      }
     });
   }
 
   render() {
+    const { loading, error, messageError, statusError } = this.state;
+
     return (
       <div className="container">
         <div className="row">
@@ -101,9 +122,11 @@ class Register extends Component {
                 Register
               </button>
             </form>
-            <div class="alert alert-light" role="alert">
-              {this.state.success}
-            </div>
+            {error && (
+              <div class="alert alert-light" role="alert">
+                {messageError}
+              </div> //May add a link to Login page from here if error
+            )}
           </div>
         </div>
       </div>

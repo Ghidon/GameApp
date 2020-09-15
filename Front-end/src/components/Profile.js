@@ -12,9 +12,6 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    // to add check if token
-    // if token then proceed to regular route
-    // else proceed to show error route / login page
     if (localStorage.usertoken) {
       const token = localStorage.usertoken;
       const decoded = jwt_decode(token);
