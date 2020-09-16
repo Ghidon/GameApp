@@ -65,7 +65,7 @@ def register():
     email = request.get_json()['email']
     test = users.find_one({"email": email})
     if test:
-        return jsonify(message="User Email Already Registered"), 409
+        return jsonify(message="User already registered"), 409
     else:
         user = {
             'first_name': request.get_json()['first_name'],
