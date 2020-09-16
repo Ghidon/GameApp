@@ -24,6 +24,12 @@ class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if (localStorage.usertoken) {
+      this.props.history.push(`/profile`);
+    }
+  }
+
   onChange(e) {
     this.setState({ messageError: "" });
     this.setState({ [e.target.name]: e.target.value });
@@ -97,7 +103,7 @@ class Register extends Component {
           });
         }
       });
-      this.setState(initialState);
+      // this.setState(initialState);
     }
   }
 
