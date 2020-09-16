@@ -181,7 +181,7 @@ class Register extends Component {
               </button>
             </form>
             {error && (
-              <div class="alert alert-light" role="alert">
+              <div className="alert alert-light" role="alert">
                 {messageError}
               </div> //May add a link to Login page from here if error
             )}

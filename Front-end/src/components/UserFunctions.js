@@ -23,30 +23,21 @@ export async function register(newUser, showErrorMessage, hideErrorMessage) {
   return response;
 }
 
-// export const register = (newUser) => {
-//   return axios
-//     .post("users/register", {
-//       first_name: newUser.first_name,
-//       last_name: newUser.last_name,
-//       email: newUser.email,
-//       password: newUser.password,
-//     })
-//     .then((response) => {
-//       console.log("Registered"); // get back from result a successfull message
-//     });
-// };
-
-export const login = (user) => {
-  return axios
+export async function login(user, showErrorMessage, hideErrorMessage) {
+  const response = await axios
     .post("users/login", {
       email: user.email,
       password: user.password,
     })
+    .then(hideErrorMessage())
     .then((response) => {
-      localStorage.setItem("usertoken", response.data.token);
-      return response.data.token;
-    })
-    .catch((err) => {
-      console.log(err);
+      if (!response.data.error) {
+        localStorage.setItem("usertoken", response.data.token);
+        return response.data.token;
+      } else {
+        // console.log(response);
+        showErrorMessage(response);
+      }
     });
-};
+  return response;
+}

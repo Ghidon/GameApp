@@ -7,14 +7,32 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      error: false,
+      messageError: "",
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if (localStorage.usertoken) {
+      this.props.history.push(`/profile`);
+    }
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  showErrorMessage(res) {
+    this.setState({
+      error: true,
+      messageError: res.data.error,
+    });
+  }
+  hideErrorMessage() {
+    this.setState({ error: false, messageError: "" });
   }
 
   onSubmit(e) {
@@ -25,14 +43,22 @@ class Login extends Component {
       password: this.state.password,
     };
 
-    login(user).then((res) => {
-      if (!res.error) {
+    login(
+      user,
+      this.showErrorMessage.bind(this),
+      this.hideErrorMessage.bind(this)
+    ).then((res) => {
+      if (res) {
         this.props.history.push(`/profile`);
+      } else {
+        console.log("error: Login Failed");
       }
     });
   }
 
   render() {
+    const { error, messageError } = this.state;
+
     return (
       <div className="container">
         <div className="row">
@@ -69,6 +95,11 @@ class Login extends Component {
                 Sign in
               </button>
             </form>
+            {error && (
+              <div className="alert alert-light" role="alert">
+                {messageError}
+              </div> //May add a link to Login page from here if error
+            )}
           </div>
         </div>
       </div>

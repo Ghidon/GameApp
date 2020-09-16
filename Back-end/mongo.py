@@ -101,9 +101,9 @@ def login():
                 {'token': access_token, "result": "Login Successful"})
         else:
             result = jsonify(
-                {"error": "Invalid password"})
+                {"error": "Wrong Password or Email"})
     else:
-        result = jsonify({"result": "No results found"})
+        result = jsonify({"error": "Wrong Email or Password"})
     return result
 
 
