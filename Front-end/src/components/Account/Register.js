@@ -154,6 +154,9 @@ class Register extends Component {
                   value={this.state.email}
                   onChange={this.onChange}
                 />
+                <small id="emailHelp" className="form-text text-muted">
+                  We'll never share your email with anyone else.
+                </small>
                 <div style={{ fontSize: 12, color: "red" }}>
                   {this.state.emailError}
                 </div>

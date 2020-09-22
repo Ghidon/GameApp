@@ -32,8 +32,8 @@ class Profile extends Component {
   render() {
     return (
       <div className="container">
-        <div class="row">
-          <div class="col-lg-4">
+        <div className="row">
+          <div className="col-lg-4">
             {" "}
             <div className="jumbotron mt-2">
               <h2 className="text-center">PROFILE</h2>
@@ -60,13 +60,13 @@ class Profile extends Component {
               </table>
             </div>
           </div>
-          <div class="col-lg-8">
+          <div className="col-lg-8">
             {" "}
             <div className="jumbotron mt-2">
               <div className="d-flex justify-content-between">
                 <h2 className="">Active Games</h2>
-                <Link to="/" className="nav-link">
-                  <button type="button" class="btn btn-outline-primary">
+                <Link to="/games/new" className="nav-link">
+                  <button type="button" className="btn btn-outline-primary">
                     Create a New Game
                   </button>
                 </Link>
