@@ -95,7 +95,8 @@ def login():
             access_token = create_access_token(identity={
                 'first_name': response['first_name'],
                 'last_name': response['last_name'],
-                'email': response['email']
+                'email': response['email'],
+                'created': response['created']
             })
             result = jsonify(
                 {'token': access_token, "result": "Login Successful"})

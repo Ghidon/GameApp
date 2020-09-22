@@ -41,3 +41,16 @@ export async function login(user, showErrorMessage, hideErrorMessage) {
     });
   return response;
 }
+
+export async function autoLogin(user) {
+  const response = await axios
+    .post("users/login", {
+      email: user.email,
+      password: user.password,
+    })
+    .then((response) => {
+      localStorage.setItem("usertoken", response.data.token);
+      return response.data.token;
+    });
+  return response;
+}

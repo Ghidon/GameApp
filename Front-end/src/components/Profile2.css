@@ -1,0 +1,23 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.nero {
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.greyback {
+  background-color: lightgray;
+  border-radius: 4px;
+}
+
+.spacing {
+  margin-top: 8px;
+}
+
+.container-fluid {
+  padding: 0px;
+}

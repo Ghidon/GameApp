@@ -8,6 +8,7 @@ class Profile extends Component {
       first_name: "",
       last_name: "",
       email: "",
+      created: "",
     };
   }
 
@@ -19,6 +20,7 @@ class Profile extends Component {
         first_name: decoded.identity.first_name,
         last_name: decoded.identity.last_name,
         email: decoded.identity.email,
+        created: decoded.identity.created,
       });
     } else {
       this.props.history.push(`/login`);
@@ -45,6 +47,10 @@ class Profile extends Component {
               <tr>
                 <td>Email</td>
                 <td>{this.state.email}</td>
+              </tr>
+              <tr>
+                <td>Member since</td>
+                <td>{this.state.created}</td>
               </tr>
             </tbody>
           </table>

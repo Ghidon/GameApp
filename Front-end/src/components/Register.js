@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { register, login } from "./UserFunctions";
+import { register, autoLogin } from "./UserFunctions";
 
 const initialState = {
   first_name: "",
@@ -98,7 +98,7 @@ class Register extends Component {
             email: this.state.email,
             password: this.state.password,
           };
-          login(user).then((res) => {
+          autoLogin(user).then((res) => {
             this.props.history.push(`/profile`);
           });
         }
@@ -117,7 +117,7 @@ class Register extends Component {
             <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Register</h1>
               <div className="form-group">
-                <label htmlFor="first_name">First Name</label>
+                <label htmlFor="first_name">First Name*</label>
                 <input
                   type="text"
                   className="form-control"
@@ -131,7 +131,7 @@ class Register extends Component {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="last_name">Last Name</label>
+                <label htmlFor="last_name">Last Name*</label>
                 <input
                   type="text"
                   className="form-control"
@@ -145,7 +145,7 @@ class Register extends Component {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="email">Email Address</label>
+                <label htmlFor="email">Email Address*</label>
                 <input
                   type="email"
                   className="form-control"
@@ -159,7 +159,7 @@ class Register extends Component {
                 </div>
               </div>
               <div className="form-group">
-                <label htmlFor="password">Password </label>
+                <label htmlFor="password">Password*</label>
                 <input
                   type="password"
                   className="form-control"
@@ -183,7 +183,7 @@ class Register extends Component {
             {error && (
               <div className="alert alert-light" role="alert">
                 {messageError}
-              </div> //May add a link to Login page from here if error
+              </div>
             )}
           </div>
         </div>
