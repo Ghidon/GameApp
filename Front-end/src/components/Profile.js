@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import "./Profile.css";
 
 class Profile extends Component {
   constructor() {
@@ -30,34 +32,57 @@ class Profile extends Component {
   render() {
     return (
       <div className="container">
-        <div className="jumbotron mt-5">
-          <div className="col-sm-8 mx-auto">
-            <h1 className="text-center">PROFILE</h1>
+        <div class="row">
+          <div class="col-lg-4">
+            {" "}
+            <div className="jumbotron mt-2">
+              <h2 className="text-center">PROFILE</h2>
+
+              <table className="table">
+                <tbody>
+                  <tr>
+                    <td>First Name</td>
+                    <td>{this.state.first_name}</td>
+                  </tr>
+                  <tr>
+                    <td>Last Name</td>
+                    <td>{this.state.last_name}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td>{this.state.email}</td>
+                  </tr>
+                  <tr>
+                    <td>Member since</td>
+                    <td>{this.state.created}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <table className="table col-md-6 mx-auto">
-            <tbody>
-              <tr>
-                <td>First Name</td>
-                <td>{this.state.first_name}</td>
-              </tr>
-              <tr>
-                <td>Last Name</td>
-                <td>{this.state.last_name}</td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td>{this.state.email}</td>
-              </tr>
-              <tr>
-                <td>Member since</td>
-                <td>{this.state.created}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="col-lg-8">
+            {" "}
+            <div className="jumbotron mt-2">
+              <div className="d-flex justify-content-between">
+                <h2 className="">Active Games</h2>
+                <Link to="/" className="nav-link">
+                  <button type="button" class="btn btn-outline-primary">
+                    Create a New Game
+                  </button>
+                </Link>
+              </div>
+            </div>
+            <div className="jumbotron">
+              <div className="d-flex justify-content-between">
+                <h5>No Active Games for now</h5>
+              </div>
+            </div>
+            {/* If no active game present, state games is empty, then show a message "No Active Games for now" */}
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default Profile;
+export default withRouter(Profile);

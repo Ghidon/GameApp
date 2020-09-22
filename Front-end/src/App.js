@@ -6,7 +6,6 @@ import Landing from "./components/Landing";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
-import Profile2 from "./components/Profile2";
 
 class App extends Component {
   render() {
@@ -19,7 +18,6 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/profile2" component={Profile2} />
           </div>
         </div>
       </Router>
