@@ -17,6 +17,8 @@ class Profile extends Component {
   componentDidMount() {
     if (localStorage.usertoken) {
       this.setUserDetails();
+      //check games for a game with user email in either Creator or Player's Array
+      //If there is a Match, Show the name of the Game in Active Games section
     } else {
       this.props.history.push(`/login`);
     }

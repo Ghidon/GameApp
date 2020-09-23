@@ -130,5 +130,55 @@ def createNewGame():
 ##############
 
 
+@app.route("/games", methods=["GET"])
+def show_games():
+    try:
+        games = mongo.db.games
+        data = list(games.find())
+        for game in data:
+            game["_id"] = str(game["_id"])
+        return Response(
+            response=json.dumps(data, default=str),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot read Games"}),
+            status=500,
+            mimetype="application/json"
+        )
+
+##############
+
+
+@app.route("/games/<email>", methods=["GET"])
+def find_game_by_email(email):
+    try:
+        games = mongo.db.games
+        data = list(games.find({"creator": email}))
+        for game in data:
+            game["_id"] = str(game["_id"])
+        return Response(
+            response=json.dumps(data, default=str),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Could not retrieve games"}),
+            status=500,
+            mimetype="application/json"
+        )
+
+##############
+
+
 if __name__ == '__main__':
     app.run(debug=True)
