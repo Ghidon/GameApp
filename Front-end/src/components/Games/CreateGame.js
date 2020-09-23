@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { createGame } from "./GamesFunctions";
+import jwt_decode from "jwt-decode";
 
 export default class CreateGame extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
-      created: "",
+      game_name: "",
+      creator: "",
       error: false,
       messageError: "",
       statusError: "",
+      messageSuccess: "",
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -18,11 +20,16 @@ export default class CreateGame extends Component {
   componentDidMount() {
     if (!localStorage.usertoken) {
       this.props.history.push(`/login`);
+    } else {
+      const token = localStorage.usertoken;
+      const decoded = jwt_decode(token);
+      this.setState({ creator: decoded.identity.email });
     }
   }
 
   onChange(e) {
     this.setState({ messageError: "" });
+    this.setState({ messageSuccess: "" });
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -41,7 +48,8 @@ export default class CreateGame extends Component {
     e.preventDefault();
 
     const newGame = {
-      name: this.state.name,
+      game_name: this.state.game_name,
+      creator: this.state.creator,
     };
 
     createGame(
@@ -51,11 +59,15 @@ export default class CreateGame extends Component {
     ).then((res) => {
       if (res === undefined) {
         console.log("error: Game was not created");
+      } else {
+        this.setState({ messageSuccess: res.data.message });
       }
     });
   }
 
   render() {
+    const { error, messageSuccess, messageError } = this.state;
+
     return (
       <div className="container">
         <div className="row">
@@ -71,7 +83,7 @@ export default class CreateGame extends Component {
                 <input
                   type="email"
                   className="form-control"
-                  name="name"
+                  name="game_name"
                   placeholder="Name your Chronicle"
                   value={this.state.name}
                   onChange={this.onChange}
@@ -82,6 +94,15 @@ export default class CreateGame extends Component {
                 Create a New Game
               </button>
             </form>
+            {error ? (
+              <div className="alert alert-light" role="alert">
+                {messageError}
+              </div>
+            ) : (
+              <div className="alert alert-light" role="alert">
+                {messageSuccess}
+              </div>
+            )}
           </div>
         </div>
       </div>

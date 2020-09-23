@@ -2,8 +2,9 @@ import axios from "axios";
 
 export async function createGame(newGame, showErrorMessage, hideErrorMessage) {
   const response = await axios
-    .post("games/createGame", {
+    .post("/games/createGame", {
       game_name: newGame.game_name,
+      creator: newGame.creator,
     })
     .then(hideErrorMessage())
     .catch(function (error) {

@@ -19,17 +19,17 @@ jwt = JWTManager(app)
 
 CORS(app)
 
-try:
-    mongo = pymongo.MongoClient(
-        host="localhost",
-        port=27017,
-        serverSelectionTimeoutMS=1000
-    )
-    db = mongo.game_app
-    mongo.server_info()  # trigger exception if cannot connect to db
+# try:
+#     mongo = pymongo.MongoClient(
+#         host="localhost",
+#         port=27017,
+#         serverSelectionTimeoutMS=1000
+#     )
+#     db = mongo.game_app
+#     mongo.server_info()  # trigger exception if cannot connect to db
 
-except:
-    print("ERROR - Cannot connect to db")
+# except:
+#     print("ERROR - Cannot connect to db")
 
 ##############
 
@@ -106,6 +106,27 @@ def login():
     else:
         result = jsonify({"error": "Wrong Email or Password"})
     return result
+
+##############
+
+
+@app.route('/games/createGame', methods=["POST"])
+def createNewGame():
+    games = mongo.db.games
+    game_name = request.get_json()['game_name']
+    test = games.find_one({"game_name": game_name})
+    if test:
+        return jsonify(message="There is already a game named like this"), 409
+    else:
+        game = {
+            'game_name': request.get_json()['game_name'],
+            'creator': request.get_json()['creator'],
+            'created': datetime.utcnow()
+        }
+        games.insert_one(game)
+        return jsonify(message="Game created successfully"), 201
+
+##############
 
 
 if __name__ == '__main__':
