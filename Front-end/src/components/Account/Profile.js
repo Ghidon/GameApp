@@ -16,17 +16,21 @@ class Profile extends Component {
 
   componentDidMount() {
     if (localStorage.usertoken) {
-      const token = localStorage.usertoken;
-      const decoded = jwt_decode(token);
-      this.setState({
-        first_name: decoded.identity.first_name,
-        last_name: decoded.identity.last_name,
-        email: decoded.identity.email,
-        created: decoded.identity.created,
-      });
+      this.setUserDetails();
     } else {
       this.props.history.push(`/login`);
     }
+  }
+
+  setUserDetails() {
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    this.setState({
+      first_name: decoded.identity.first_name,
+      last_name: decoded.identity.last_name,
+      email: decoded.identity.email,
+      created: decoded.identity.created,
+    });
   }
 
   render() {

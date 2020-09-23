@@ -50,7 +50,7 @@ export default class CreateGame extends Component {
     const newGame = {
       game_name: this.state.game_name,
       creator: this.state.creator,
-      players: {},
+      players: [],
     };
 
     createGame(
@@ -80,7 +80,7 @@ export default class CreateGame extends Component {
             </p>
             <form noValidate onSubmit={this.onSubmit}>
               <div className="form-group">
-                <label for="exampleInputEmail1">Chronicle name</label>
+                <label htmlFor="exampleInputEmail1">Chronicle name</label>
                 <input
                   type="email"
                   className="form-control"
