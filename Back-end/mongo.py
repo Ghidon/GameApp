@@ -121,7 +121,8 @@ def createNewGame():
         game = {
             'game_name': request.get_json()['game_name'],
             'creator': request.get_json()['creator'],
-            'created': datetime.utcnow()
+            'created': datetime.utcnow(),
+            'players': request.get_json()['players'],
         }
         games.insert_one(game)
         return jsonify(message="Game created successfully"), 201

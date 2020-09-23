@@ -50,6 +50,7 @@ export default class CreateGame extends Component {
     const newGame = {
       game_name: this.state.game_name,
       creator: this.state.creator,
+      players: {},
     };
 
     createGame(

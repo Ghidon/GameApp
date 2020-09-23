@@ -5,6 +5,7 @@ export async function createGame(newGame, showErrorMessage, hideErrorMessage) {
     .post("/games/createGame", {
       game_name: newGame.game_name,
       creator: newGame.creator,
+      players: newGame.players,
     })
     .then(hideErrorMessage())
     .catch(function (error) {
