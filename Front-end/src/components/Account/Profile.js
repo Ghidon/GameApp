@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { findUserGames } from "../Games/GamesFunctions";
 import jwt_decode from "jwt-decode";
 import "./Profile.css";
 
@@ -14,14 +15,27 @@ class Profile extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (localStorage.usertoken) {
-      this.setUserDetails();
+      await this.setUserDetails();
+      this.setGameDetails();
       //check games for a game with user email in either Creator or Player's Array
       //If there is a Match, Show the name of the Game in Active Games section
+      //else show a message "No active Games yet"
     } else {
       this.props.history.push(`/login`);
     }
+  }
+
+  setGameDetails() {
+    // console.log(this.state.email);
+    findUserGames(this.state.email).then((res) => {
+      if (res === undefined) {
+        console.log("error: Could not retrieve games");
+      } else {
+        console.log(res.data);
+      }
+    });
   }
 
   setUserDetails() {
@@ -80,7 +94,7 @@ class Profile extends Component {
             </div>
             <div className="jumbotron">
               <div className="d-flex justify-content-between">
-                <h5>No Active Games for now</h5>
+                <h5>No Active Games yet</h5>
               </div>
             </div>
             {/* If no active game present, state games is empty, then show a message "No Active Games for now" */}
