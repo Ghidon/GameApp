@@ -13,8 +13,16 @@ body {
   font-weight: 500;
   font-size: 20px;
   margin: 10px 0px;
+  display: flex;
 }
 
 a {
   color: black;
+}
+
+.mainDiv {
+  width: 100%;
+}
+.roleClass {
+  float: right;
 }

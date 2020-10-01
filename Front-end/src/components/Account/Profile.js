@@ -38,15 +38,34 @@ class Profile extends Component {
         // console.log(res.data);
         const gamesList = res.data;
         const myDiv = document.getElementById("gamesList");
-        console.log(gamesList);
+
         gamesList.map((game) => {
-          let gameNameDiv = document.createElement("div");
-          let gameNameLink = document.createElement("a");
-          gameNameLink.href = "/games/" + game.game_name;
-          gameNameDiv.classList.add("gameTitle");
+          console.log(game);
           let gameName = game.game_name;
+          let gameId = game._id;
+          console.log(gameId);
+          myDiv.classList.add("mainDiv");
+
+          let gameNameDiv = document.createElement("div");
+          gameNameDiv.classList.add("gameTitle");
+          gameNameDiv.classList.add("d-flex");
+          gameNameDiv.classList.add("justify-content-between");
+          let gameNameLink = document.createElement("a");
+          gameNameLink.href = "/games/" + gameId;
+
+          let gameRoleDiv = document.createElement("span");
+          gameRoleDiv.classList.add("roleClass");
+          let role;
+          if (game.creator == this.state.email) {
+            role = "Creator";
+          } else {
+            role = "Player";
+          }
           gameNameLink.innerText = gameName;
+          gameRoleDiv.innerText = role;
+
           gameNameDiv.appendChild(gameNameLink);
+          gameNameDiv.appendChild(gameRoleDiv);
           myDiv.appendChild(gameNameDiv);
         });
 
