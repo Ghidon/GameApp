@@ -6,30 +6,16 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
+import db
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'game_app'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/game_app'
 app.config['JWT_SECRET_KEY'] = 'secret'
 
-mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 CORS(app)
-
-# try:
-#     mongo = pymongo.MongoClient(
-#         host="localhost",
-#         port=27017,
-#         serverSelectionTimeoutMS=1000
-#     )
-#     db = mongo.game_app
-#     mongo.server_info()  # trigger exception if cannot connect to db
-
-# except:
-#     print("ERROR - Cannot connect to db")
 
 ##############
 
@@ -37,7 +23,7 @@ CORS(app)
 @app.route("/users", methods=["GET"])
 def show_users():
     try:
-        users = mongo.db.users
+        users = db.db.users
         data = list(users.find())
         for user in data:
             user["_id"] = str(user["_id"])
@@ -61,7 +47,7 @@ def show_users():
 
 @app.route('/users/register', methods=["POST"])
 def register():
-    users = mongo.db.users
+    users = db.db.users
     email = request.get_json()['email']
     test = users.find_one({"email": email})
     if test:
@@ -83,7 +69,7 @@ def register():
 
 @app.route('/users/login', methods=['POST'])
 def login():
-    users = mongo.db.users
+    users = db.db.users
     email = request.get_json()['email']
     password = request.get_json()['password']
     result = ""
@@ -112,7 +98,7 @@ def login():
 
 @app.route('/games/createGame', methods=["POST"])
 def createNewGame():
-    games = mongo.db.games
+    games = db.db.games
     game_name = request.get_json()['game_name']
     test = games.find_one({"game_name": game_name})
     if test:
@@ -133,7 +119,7 @@ def createNewGame():
 @app.route("/games", methods=["GET"])
 def show_games():
     try:
-        games = mongo.db.games
+        games = db.db.games
         data = list(games.find())
         for game in data:
             game["_id"] = str(game["_id"])
@@ -158,7 +144,7 @@ def show_games():
 @app.route("/games/<email>", methods=["GET"])
 def find_game_by_email(email):
     try:
-        games = mongo.db.games
+        games = db.db.games
         data = list(games.find({"creator": email}))
         for game in data:
             game["_id"] = str(game["_id"])
@@ -181,4 +167,4 @@ def find_game_by_email(email):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=8000)

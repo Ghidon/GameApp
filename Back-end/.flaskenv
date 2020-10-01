@@ -1,0 +1,2 @@
+FLASK_APP=mongo.py
+FLASK_ENV=development

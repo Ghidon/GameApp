@@ -34,6 +34,7 @@ class Profile extends Component {
         console.log("error: Could not retrieve games");
       } else {
         console.log(res.data);
+        //need to use this to loop over the results and post in the DOM the list of Games
       }
     });
   }
