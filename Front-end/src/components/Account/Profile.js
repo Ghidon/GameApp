@@ -17,8 +17,10 @@ class Profile extends Component {
 
   async componentDidMount() {
     if (localStorage.usertoken) {
+      const myDiv = document.getElementById("gamesList");
       await this.setUserDetails();
       this.setGameDetails();
+
       //check games for a game with user email in either Creator or Player's Array
       //If there is a Match, Show the name of the Game in Active Games section
       //else show a message "No active Games yet"
@@ -33,7 +35,21 @@ class Profile extends Component {
       if (res === undefined) {
         console.log("error: Could not retrieve games");
       } else {
-        console.log(res.data);
+        // console.log(res.data);
+        const gamesList = res.data;
+        const myDiv = document.getElementById("gamesList");
+        console.log(gamesList);
+        gamesList.map((game) => {
+          let gameNameDiv = document.createElement("div");
+          let gameNameLink = document.createElement("a");
+          gameNameLink.href = "/games/" + game.game_name;
+          gameNameDiv.classList.add("gameTitle");
+          let gameName = game.game_name;
+          gameNameLink.innerText = gameName;
+          gameNameDiv.appendChild(gameNameLink);
+          myDiv.appendChild(gameNameDiv);
+        });
+
         //need to use this to loop over the results and post in the DOM the list of Games
       }
     });
@@ -95,7 +111,7 @@ class Profile extends Component {
             </div>
             <div className="jumbotron">
               <div className="d-flex justify-content-between">
-                <h5>No Active Games yet</h5>
+                <div id="gamesList"></div>
               </div>
             </div>
             {/* If no active game present, state games is empty, then show a message "No Active Games for now" */}
