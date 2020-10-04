@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { findUserGames } from "../Games/GamesFunctions";
+import CreateGame from "../Games/CreateGame";
 import jwt_decode from "jwt-decode";
 import "./Profile.css";
 
@@ -12,15 +13,14 @@ class Profile extends Component {
       last_name: "",
       email: "",
       created: "",
+      no_games: true,
     };
   }
 
   async componentDidMount() {
     if (localStorage.usertoken) {
-      const myDiv = document.getElementById("gamesList");
       await this.setUserDetails();
       this.setGameDetails();
-
       //check games for a game with user email in either Creator or Player's Array
       //If there is a Match, Show the name of the Game in Active Games section
       //else show a message "No active Games yet"
@@ -30,46 +30,45 @@ class Profile extends Component {
   }
 
   setGameDetails() {
-    // console.log(this.state.email);
     findUserGames(this.state.email).then((res) => {
       if (res === undefined) {
         console.log("error: Could not retrieve games");
       } else {
-        // console.log(res.data);
         const gamesList = res.data;
-        const myDiv = document.getElementById("gamesList");
+        console.log(gamesList);
+        if (gamesList.length < 1) {
+          this.setState({ no_games: true });
+        } else {
+          this.setState({ no_games: false });
+          const myDiv = document.getElementById("gamesList");
+          gamesList.forEach((game) => {
+            let gameName = game.game_name;
+            let gameId = game._id;
+            myDiv.classList.add("mainDiv");
 
-        gamesList.map((game) => {
-          console.log(game);
-          let gameName = game.game_name;
-          let gameId = game._id;
-          console.log(gameId);
-          myDiv.classList.add("mainDiv");
+            let gameNameDiv = document.createElement("div");
+            gameNameDiv.classList.add("gameTitle");
+            gameNameDiv.classList.add("d-flex");
+            gameNameDiv.classList.add("justify-content-between");
+            let gameNameLink = document.createElement("a");
+            gameNameLink.href = "/games/" + gameId;
 
-          let gameNameDiv = document.createElement("div");
-          gameNameDiv.classList.add("gameTitle");
-          gameNameDiv.classList.add("d-flex");
-          gameNameDiv.classList.add("justify-content-between");
-          let gameNameLink = document.createElement("a");
-          gameNameLink.href = "/games/" + gameId;
+            let gameRoleDiv = document.createElement("span");
+            gameRoleDiv.classList.add("roleClass");
+            let role;
+            if (game.creator === this.state.email) {
+              role = "Creator";
+            } else {
+              role = "Player";
+            }
+            gameNameLink.innerText = gameName;
+            gameRoleDiv.innerText = role;
 
-          let gameRoleDiv = document.createElement("span");
-          gameRoleDiv.classList.add("roleClass");
-          let role;
-          if (game.creator == this.state.email) {
-            role = "Creator";
-          } else {
-            role = "Player";
-          }
-          gameNameLink.innerText = gameName;
-          gameRoleDiv.innerText = role;
-
-          gameNameDiv.appendChild(gameNameLink);
-          gameNameDiv.appendChild(gameRoleDiv);
-          myDiv.appendChild(gameNameDiv);
-        });
-
-        //need to use this to loop over the results and post in the DOM the list of Games
+            gameNameDiv.appendChild(gameNameLink);
+            gameNameDiv.appendChild(gameRoleDiv);
+            myDiv.appendChild(gameNameDiv);
+          });
+        }
       }
     });
   }
@@ -86,6 +85,8 @@ class Profile extends Component {
   }
 
   render() {
+    const { no_games } = this.state;
+
     return (
       <div className="container">
         <div className="row">
@@ -121,17 +122,53 @@ class Profile extends Component {
             <div className="jumbotron mt-2">
               <div className="d-flex justify-content-between">
                 <h2 className="">Active Games</h2>
-                <Link to="/games/new" className="nav-link">
-                  <button type="button" className="btn btn-outline-primary">
+                {no_games ? (
+                  <div></div>
+                ) : (
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#exampleModalCenter"
+                  >
                     Create a New Game
                   </button>
-                </Link>
+                )}
+                <div
+                  class="modal fade"
+                  id="exampleModalCenter"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalCenterTitle"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
+                    <CreateGame />
+                  </div>
+                </div>
               </div>
             </div>
             <div className="jumbotron">
-              <div className="d-flex justify-content-between">
-                <div id="gamesList"></div>
-              </div>
+              {no_games ? (
+                <div className="d-flex justify-content-between">
+                  <h4>There is no active game at the moment</h4>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#exampleModalCenter"
+                  >
+                    Create a New Game
+                  </button>
+                </div>
+              ) : (
+                <div className="d-flex justify-content-between">
+                  <div id="gamesList"></div>
+                </div>
+              )}
             </div>
             {/* If no active game present, state games is empty, then show a message "No Active Games for now" */}
           </div>
