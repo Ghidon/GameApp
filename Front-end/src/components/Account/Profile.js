@@ -44,26 +44,35 @@ class Profile extends Component {
           gamesList.forEach((game) => {
             let gameName = game.game_name;
             let gameId = game._id;
-            myDiv.classList.add("mainDiv");
+            myDiv.classList.add(
+              "mainDiv",
+              "d-flex",
+              "flex-wrap",
+              "justify-content-between"
+            );
 
             let gameNameDiv = document.createElement("div");
-            gameNameDiv.classList.add("gameTitle");
-            gameNameDiv.classList.add("d-flex");
-            gameNameDiv.classList.add("justify-content-between");
+            gameNameDiv.classList.add("gameTitle", "d-flex", "flex-column");
+
+            let gameImage = document.createElement("div");
+            gameImage.classList.add("gameImage");
             let gameNameLink = document.createElement("a");
             gameNameLink.href = "/games/" + gameId;
-
             let gameRoleDiv = document.createElement("span");
             gameRoleDiv.classList.add("roleClass");
+
             let role;
             if (game.creator === this.state.email) {
+              gameRoleDiv.classList.add("creator");
               role = "Creator";
             } else {
+              gameRoleDiv.classList.add("player");
               role = "Player";
             }
             gameNameLink.innerText = gameName;
             gameRoleDiv.innerText = role;
 
+            gameNameDiv.appendChild(gameImage);
             gameNameDiv.appendChild(gameNameLink);
             gameNameDiv.appendChild(gameRoleDiv);
             myDiv.appendChild(gameNameDiv);
@@ -94,6 +103,7 @@ class Profile extends Component {
             {" "}
             <div className="jumbotron mt-2">
               <h2 className="text-center">PROFILE</h2>
+              <div className="profileImage"></div>
 
               <table className="table">
                 <tbody>

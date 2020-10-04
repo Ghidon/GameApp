@@ -2,6 +2,7 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .container-fluid {
@@ -9,13 +10,26 @@ body {
 }
 
 .gameTitle {
-  color: black;
+  border: 1px solid grey;
+  border-radius: 8px;
+  min-width: 48%;
   font-weight: 500;
   font-size: 20px;
-  padding: 10px 0px;
   display: flex;
+  margin: 10px 0px;
+  padding: 5px;
 }
 
+.profileImage {
+  background-color: grey;
+  height: 250px;
+  margin: 10px;
+}
+
+.gameImage {
+  background-color: grey;
+  height: 150px;
+}
 a {
   color: black;
 }
@@ -23,8 +37,20 @@ a {
 .mainDiv {
   width: 100%;
 }
+
 .roleClass {
   font-size: 16px;
-  color: green;
   padding-right: 16px;
+}
+.creator {
+  color: green;
+}
+.player {
+  color: blue;
+}
+
+@media only screen and (max-width: 540px) {
+  .gameTitle {
+    min-width: 100%;
+  }
 }
