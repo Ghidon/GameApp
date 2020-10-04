@@ -25,32 +25,13 @@ export default class GameDetails extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-lg-4">
+          <div className="col-lg-12">
             {" "}
             <div className="jumbotron mt-2">
-              <h2 className="text-center">PROFILE</h2>
+              <h2 className="text-center">Game Name{this.state.game_name}</h2>
               <div className="profileImage"></div>
-
-              <table className="table">
-                <tbody>
-                  <tr>
-                    <td>First Name</td>
-                    <td>{this.state.first_name}</td>
-                  </tr>
-                  <tr>
-                    <td>Last Name</td>
-                    <td>{this.state.last_name}</td>
-                  </tr>
-                  <tr>
-                    <td>Email</td>
-                    <td>{this.state.email}</td>
-                  </tr>
-                  <tr>
-                    <td>Member since</td>
-                    <td>{this.state.created}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="text-center">Creator: {this.state.creator}</div>
+              <div className="text-center">Players: {this.state.players}</div>
             </div>
           </div>
         </div>
