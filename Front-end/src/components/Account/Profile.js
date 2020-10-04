@@ -127,7 +127,7 @@ class Profile extends Component {
                 ) : (
                   <button
                     type="button"
-                    class="btn btn-primary"
+                    className="btn btn-primary"
                     data-toggle="modal"
                     data-target="#exampleModalCenter"
                   >
@@ -135,7 +135,7 @@ class Profile extends Component {
                   </button>
                 )}
                 <div
-                  class="modal fade"
+                  className="modal fade"
                   id="exampleModalCenter"
                   tabindex="-1"
                   role="dialog"
@@ -143,7 +143,7 @@ class Profile extends Component {
                   aria-hidden="true"
                 >
                   <div
-                    class="modal-dialog modal-dialog-centered"
+                    className="modal-dialog modal-dialog-centered"
                     role="document"
                   >
                     <CreateGame />
@@ -157,7 +157,7 @@ class Profile extends Component {
                   <h4>There is no active game at the moment</h4>
                   <button
                     type="button"
-                    class="btn btn-primary"
+                    className="btn btn-primary"
                     data-toggle="modal"
                     data-target="#exampleModalCenter"
                   >

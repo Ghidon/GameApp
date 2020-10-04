@@ -145,7 +145,10 @@ def show_games():
 def find_game_by_email(email):
     try:
         games = db.db.games
-        data = list(games.find({"creator": email}))
+        creatordata = list(games.find({"creator": email}))
+        playerData = list(games.find({"players": email}))
+        data = creatordata + playerData
+
         for game in data:
             game["_id"] = str(game["_id"])
         return Response(

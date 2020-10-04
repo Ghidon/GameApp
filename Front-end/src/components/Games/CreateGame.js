@@ -74,43 +74,6 @@ export default class CreateGame extends Component {
     const { error, messageSuccess, messageError } = this.state;
 
     return (
-      // <div className="container">
-      //   <div className="row">
-      //     <div className="col-md-6 mt-5 mx-auto">
-      //       <h3>Create a new Chronicle</h3>
-      //       <p>
-      //         Name your new Chronicle. Then click the "Create a New Game"
-      //         button.
-      //       </p>
-      //       <form noValidate onSubmit={this.onSubmit}>
-      //         <div className="form-group">
-      //           <label htmlFor="exampleInputEmail1">Chronicle name</label>
-      //           <input
-      //             type="email"
-      //             className="form-control"
-      //             name="game_name"
-      //             placeholder="Name your Chronicle"
-      //             value={this.state.name}
-      //             onChange={this.onChange}
-      //           />
-      //         </div>
-
-      //         <button type="submit" className="btn btn-outline-primary">
-      //           Create a New Game
-      //         </button>
-      //       </form>
-      //       {error ? (
-      //         <div className="alert alert-light" role="alert">
-      //           {messageError}
-      //         </div>
-      //       ) : (
-      //         <div className="alert alert-light" role="alert">
-      //           {messageSuccess}
-      //         </div>
-      //       )}
-      //     </div>
-      //   </div>
-      // </div>
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">
