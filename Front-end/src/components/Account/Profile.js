@@ -13,7 +13,7 @@ class Profile extends Component {
       last_name: "",
       email: "",
       created: "",
-      no_games: true,
+      no_games: false,
     };
   }
 
@@ -57,7 +57,7 @@ class Profile extends Component {
             let gameImage = document.createElement("div");
             gameImage.classList.add("gameImage");
             let gameNameLink = document.createElement("a");
-            gameNameLink.href = "/games/" + gameId;
+            gameNameLink.href = "/games/details?ID=" + gameId;
             let gameRoleDiv = document.createElement("span");
             gameRoleDiv.classList.add("roleClass");
 
@@ -137,7 +137,7 @@ class Profile extends Component {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-outline-primarybtn btn-outline-primary"
                     data-toggle="modal"
                     data-target="#exampleModalCenter"
                   >

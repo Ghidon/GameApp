@@ -46,9 +46,7 @@ export default class CreateGame extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-
     const closeModal = document.getElementById("closeButton");
-
     const newGame = {
       game_name: this.state.game_name,
       creator: this.state.creator,
@@ -59,15 +57,14 @@ export default class CreateGame extends Component {
       newGame,
       this.showErrorMessage.bind(this),
       this.hideErrorMessage.bind(this)
-    )
-      .then((res) => {
-        if (res === undefined) {
-          console.log("error: Game was not created");
-        } else {
-          this.setState({ messageSuccess: res.data.message });
-        }
-      })
-      .then(closeModal.click());
+    ).then((res) => {
+      if (res === undefined) {
+        console.log("error: Game was not created");
+      } else {
+        this.setState({ messageSuccess: res.data.message });
+        closeModal.click();
+      }
+    });
   }
 
   render() {
@@ -113,7 +110,7 @@ export default class CreateGame extends Component {
                 type="submit"
                 class="btn btn-outline-primarybtn btn-outline-primary"
               >
-                Save changes
+                Save game
               </button>
             </div>
           </form>

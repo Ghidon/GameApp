@@ -169,5 +169,31 @@ def find_game_by_email(email):
 ##############
 
 
+@app.route("/games/details/<_id>", methods=["GET"])
+def find_game_by_id(_id):
+    try:
+        games = db.db.games
+        data = list(games.find({"_id": ObjectId(_id)}))
+
+        # for game in data:
+        #     game["_id"] = str(game["_id"])
+        return Response(
+            response=json.dumps(data, default=str),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Could not retrieve game"}),
+            status=500,
+            mimetype="application/json"
+        )
+
+##############
+
+
 if __name__ == '__main__':
     app.run(port=8000)
