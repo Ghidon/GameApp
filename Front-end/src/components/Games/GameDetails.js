@@ -30,7 +30,9 @@ export default class GameDetails extends Component {
             <div className="jumbotron mt-2">
               <h2 className="text-center">Game Name{this.state.game_name}</h2>
               <div className="profileImage"></div>
-              <div className="text-center">Creator: {this.state.creator}</div>
+              <div className="text-center">
+                Created by: {this.state.creator}
+              </div>
               <div className="text-center">Players: {this.state.players}</div>
             </div>
           </div>

@@ -45,6 +45,33 @@ def show_users():
 ##############
 
 
+@app.route("/users/<email>", methods=["GET"])
+def find_user_by_email(email):
+    try:
+        users = db.db.users
+        print(users)
+        data = list(users.find({"email": email}))
+
+        for user in data:
+            user["_id"] = str(user["_id"])
+        return Response(
+            response=json.dumps(data, default=str),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Could not retrieve user"}),
+            status=500,
+            mimetype="application/json"
+        )
+
+##############
+
+
 @app.route('/users/register', methods=["POST"])
 def register():
     users = db.db.users
