@@ -202,8 +202,8 @@ def find_game_by_id(_id):
         games = db.db.games
         data = list(games.find({"_id": ObjectId(_id)}))
 
-        # for game in data:
-        #     game["_id"] = str(game["_id"])
+        for game in data:
+            game["_id"] = str(game["_id"])
         return Response(
             response=json.dumps(data, default=str),
             status=200,
