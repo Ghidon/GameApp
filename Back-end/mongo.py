@@ -222,5 +222,37 @@ def find_game_by_id(_id):
 ##############
 
 
+@app.route("/games/details/<game_id>/<user_email>", methods=["PATCH"])
+def assign_player_to_game(game_id, user_email):
+    try:
+        games = db.db.games
+        data = list(games.find({"_id": ObjectId(game_id)}))
+        game = data[0].get('players')
+        print(game)
+
+        player = db.db.users.find_one({"email": user_email})
+        game.append(player)
+        print(game)
+        response = games.update_one(
+            {"_id": ObjectId(game_id)},
+            {"$set": {
+                "last_update": datetime.now(),
+                "players": game
+            }}
+        )
+        if response.modified_count == 1:
+            return Response(response=json.dumps({"message": "Game updated"}), status=200, mimetype="application/json")
+        else:
+            return Response(response=json.dumps({"message": "nothing to update"}), status=200, mimetype="application/json")
+
+    except Exception as ex:
+        print("****************")
+        print(ex)
+        print("****************")
+        return Response(response=json.dumps({"message": "could not update"}), status=500, mimetype="application/json")
+
+##############
+
+
 if __name__ == '__main__':
     app.run(port=8000)

@@ -35,7 +35,7 @@ class Profile extends Component {
         console.log("error: Could not retrieve games");
       } else {
         const gamesList = res.data;
-        console.log(gamesList);
+        // console.log(gamesList);
         if (gamesList.length < 1) {
           this.setState({ no_games: true });
         } else {

@@ -1,0 +1,26 @@
+.GameImage {
+  background-color: grey;
+  height: 250px;
+  margin: 12px;
+}
+
+.GameCreator {
+  margin-left: 12px;
+}
+
+.jumbotron {
+  padding: 20px;
+}
+
+.playerImage {
+  background-color: grey;
+  height: 150px;
+  width: 150px;
+  border: 5px solid #e9ecef;
+}
+
+.playerWrapper {
+  margin-right: 20px;
+  margin-top: 10px;
+  font-size: 12px;
+}
