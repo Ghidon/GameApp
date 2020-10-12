@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import jwt_decode from "jwt-decode";
-import { findGameDetails } from "./GamesFunctions";
+import { findGameDetails, findUser } from "./GamesFunctions";
 import "./GameDetails.css";
 
 export default class GameDetails extends Component {
@@ -10,6 +10,7 @@ export default class GameDetails extends Component {
       creationDate: "",
       creationTime: "",
       creator: "",
+      creator_name: "",
       game_name: "",
       players: [],
     };
@@ -43,6 +44,7 @@ export default class GameDetails extends Component {
           creationTime: date[1],
         });
         this.setPlayersList();
+        this.setCreatordetails();
       }
     });
   }
@@ -70,6 +72,20 @@ export default class GameDetails extends Component {
     });
   }
 
+  setCreatordetails() {
+    let creator_email = this.state.creator;
+    findUser(creator_email).then((res) => {
+      if (res === undefined) {
+        console.log("error: Creator was not found");
+      } else {
+        console.log(res.data[0]);
+        this.setState({ creator_name: res.data[0].first_name });
+      }
+      // this.setPlayersList();
+      // this.setCreatordetails();
+    });
+  }
+
   render() {
     return (
       <div className="container">
@@ -79,7 +95,7 @@ export default class GameDetails extends Component {
               <h2 className="text-center">{this.state.game_name}</h2>
               <div className="GameImage"></div>
               <div className="GameCreator">
-                Created by: {this.state.creator}
+                Created by: {this.state.creator_name}
               </div>
             </div>
             <div>

@@ -22,6 +22,8 @@ export async function createGame(newGame, showErrorMessage, hideErrorMessage) {
   return response;
 }
 
+// ##############################
+
 export async function findUserGames(email) {
   const response = await axios.get("/games/" + email).catch(function (error) {
     if (error.response) {
@@ -35,6 +37,24 @@ export async function findUserGames(email) {
   });
   return response;
 }
+
+// ##############################
+
+export async function findUser(email) {
+  const response = await axios.get("/users/" + email).catch(function (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log("Error", error.message);
+    }
+  });
+  return response;
+}
+
+// ##############################
 
 export async function findGameDetails(id) {
   const response = await axios
