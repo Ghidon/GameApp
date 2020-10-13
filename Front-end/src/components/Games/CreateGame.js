@@ -94,7 +94,7 @@ export default class CreateGame extends Component {
                 className="form-control"
                 name="game_name"
                 placeholder="Name your Chronicle"
-                value={this.state.name}
+                value={this.state.game_name}
                 onChange={this.onChange}
               />
             </div>

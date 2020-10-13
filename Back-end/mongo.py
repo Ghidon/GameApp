@@ -49,7 +49,6 @@ def show_users():
 def find_user_by_email(email):
     try:
         users = db.db.users
-        print(users)
         data = list(users.find({"email": email}))
 
         for user in data:
@@ -61,7 +60,10 @@ def find_user_by_email(email):
         )
 
     except Exception as ex:
+        print("****************")
         print(ex)
+        print("****************")
+
         return Response(
             response=json.dumps(
                 {"message": "Could not retrieve user"}),
@@ -226,24 +228,44 @@ def find_game_by_id(_id):
 def assign_player_to_game(game_id, user_email):
     try:
         games = db.db.games
-        data = list(games.find({"_id": ObjectId(game_id)}))
-        game = data[0].get('players')
-        print(game)
+        users = db.db.users
 
-        player = db.db.users.find_one({"email": user_email})
-        game.append(player)
-        print(game)
-        response = games.update_one(
-            {"_id": ObjectId(game_id)},
-            {"$set": {
-                "last_update": datetime.now(),
-                "players": game
-            }}
-        )
-        if response.modified_count == 1:
-            return Response(response=json.dumps({"message": "Game updated"}), status=200, mimetype="application/json")
+        game = list(games.find({"_id": ObjectId(game_id)}))
+        game_players = game[0].get('players')
+        email_list = []
+        creator_email = ""
+
+        for i in game_players:
+            email_list.append(i["email"])
+
+        for i in game:
+            creator_email = i["creator"]
+
+        if (user_email in email_list) or (creator_email == user_email):
+            return Response(
+                response=json.dumps(
+                    {"message": "This user is already in this game"}),
+                status=400,
+                mimetype="application/json"
+            )
         else:
-            return Response(response=json.dumps({"message": "nothing to update"}), status=200, mimetype="application/json")
+            player = users.find_one({"email": user_email})
+            if player is None:
+                return Response(response=json.dumps({"message": "This email doesn't match any registered player"}),
+                                status=400, mimetype="application/json")
+            else:
+                game_players.append(player)
+                response = games.update_one(
+                    {"_id": ObjectId(game_id)},
+                    {"$set": {
+                        "last_update": datetime.utcnow(),
+                        "players": game_players
+                    }}
+                )
+                if response.modified_count == 1:
+                    return Response(response=json.dumps({"message": "Game updated"}), status=200, mimetype="application/json")
+                else:
+                    return Response(response=json.dumps({"message": "nothing to update"}), status=200, mimetype="application/json")
 
     except Exception as ex:
         print("****************")

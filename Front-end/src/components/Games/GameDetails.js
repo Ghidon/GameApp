@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import jwt_decode from "jwt-decode";
 import { findGameDetails, findUser } from "./GamesFunctions";
+import AddPlayerToGame from "../Games/AddPlayerToGame";
 import "./GameDetails.css";
 
 export default class GameDetails extends Component {
@@ -78,11 +79,9 @@ export default class GameDetails extends Component {
       if (res === undefined) {
         console.log("error: Creator was not found");
       } else {
-        console.log(res.data[0]);
+        // res.data[0] = whole creator details
         this.setState({ creator_name: res.data[0].first_name });
       }
-      // this.setPlayersList();
-      // this.setCreatordetails();
     });
   }
 
@@ -94,8 +93,33 @@ export default class GameDetails extends Component {
             <div className="jumbotron mt-2">
               <h2 className="text-center">{this.state.game_name}</h2>
               <div className="GameImage"></div>
-              <div className="GameCreator">
-                Created by: {this.state.creator_name}
+              <div className="d-flex justify-content-between bottom-wrapper">
+                <div className="GameCreator">
+                  Created by: {this.state.creator_name}
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  data-toggle="modal"
+                  data-target="#addPlayerToGameModal"
+                >
+                  Add a Player
+                </button>
+                <div
+                  className="modal fade"
+                  id="addPlayerToGameModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="addPlayerToGameModalTitle"
+                  aria-hidden="true"
+                >
+                  <div
+                    className="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
+                    <AddPlayerToGame />
+                  </div>
+                </div>
               </div>
             </div>
             <div>

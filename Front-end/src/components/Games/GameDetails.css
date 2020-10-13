@@ -5,7 +5,7 @@
 }
 
 .GameCreator {
-  margin-left: 12px;
+  align-self: center;
 }
 
 .jumbotron {
@@ -21,6 +21,10 @@
 
 .playerWrapper {
   margin-right: 20px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   font-size: 12px;
+}
+
+.bottom-wrapper {
+  padding: 0px 12px;
 }

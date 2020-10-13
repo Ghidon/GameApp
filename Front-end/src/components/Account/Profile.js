@@ -137,19 +137,19 @@ class Profile extends Component {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-outline-primarybtn btn-outline-primary"
+                    className="btn btn-outline-primary"
                     data-toggle="modal"
-                    data-target="#exampleModalCenter"
+                    data-target="#createGameModal"
                   >
                     Create a New Game
                   </button>
                 )}
                 <div
                   className="modal fade"
-                  id="exampleModalCenter"
+                  id="createGameModal"
                   tabindex="-1"
                   role="dialog"
-                  aria-labelledby="exampleModalCenterTitle"
+                  aria-labelledby="createGameModalTitle"
                   aria-hidden="true"
                 >
                   <div
