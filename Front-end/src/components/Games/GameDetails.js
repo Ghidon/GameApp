@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import jwt_decode from "jwt-decode";
-import { findGameDetails, findUser } from "./GamesFunctions";
+import { findGameDetails } from "./GamesFunctions";
+import { findUser } from "../Account/UserFunctions";
 import AddPlayerToGame from "../Games/AddPlayerToGame";
 import "./GameDetails.css";
 
@@ -51,8 +52,7 @@ export default class GameDetails extends Component {
   }
 
   setPlayersList() {
-    const myDiv = document.getElementById("playersList");
-    // console.log(this.state.players);
+    const myDiv = document.getElementById("playersList");    
     this.state.players.forEach((player) => {
       myDiv.classList.add(
         "mainDiv",
@@ -79,8 +79,7 @@ export default class GameDetails extends Component {
       if (res === undefined) {
         console.log("error: Creator was not found");
       } else {
-        // res.data[0] = whole creator details
-        console.log(res.data)
+        // res.data[0] = whole creator details        
         this.setState({ creator_name: res.data[0].first_name });
       }
     });
