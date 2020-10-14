@@ -22,7 +22,7 @@ export default class AddPlayerToGame extends Component {
   }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value, error: false });
+    this.setState({ [e.target.name]: e.target.value, error: false, messageSuccess: "" });
   }
 
   showErrorMessage(data) {
@@ -53,22 +53,22 @@ export default class AddPlayerToGame extends Component {
     const { error, messageError, messageSuccess } = this.state;
 
     return (
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addPlayerToGameModal">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="addPlayerToGameModal">
             Add a player to your Chronicle
           </h5>
           <button
             id="closeButton"
             type="button"
-            class="close"
+            className="close"
             data-dismiss="modal"
             aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div className="modal-body">
           <form noValidate onSubmit={this.onSubmit}>
             <div className="form-group">
               <input
@@ -89,17 +89,17 @@ export default class AddPlayerToGame extends Component {
                 {messageSuccess}
               </div>
             )}
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-dismiss="modal"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="btn btn-outline-primarybtn btn-outline-primary"
+                className="btn btn-outline-primarybtn btn-outline-primary"
               >
                 Add Player
               </button>

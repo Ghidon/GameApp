@@ -80,6 +80,7 @@ export default class GameDetails extends Component {
         console.log("error: Creator was not found");
       } else {
         // res.data[0] = whole creator details
+        console.log(res.data)
         this.setState({ creator_name: res.data[0].first_name });
       }
     });
@@ -108,7 +109,7 @@ export default class GameDetails extends Component {
                 <div
                   className="modal fade"
                   id="addPlayerToGameModal"
-                  tabindex="-1"
+                  tabIndex="-1"
                   role="dialog"
                   aria-labelledby="addPlayerToGameModalTitle"
                   aria-hidden="true"

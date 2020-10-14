@@ -71,22 +71,22 @@ export default class CreateGame extends Component {
     const { error, messageSuccess, messageError } = this.state;
 
     return (
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLongTitle">
             Create a new Chronicle
           </h5>
           <button
             id="closeButton"
             type="button"
-            class="close"
+            className="close"
             data-dismiss="modal"
             aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div className="modal-body">
           <form noValidate onSubmit={this.onSubmit}>
             <div className="form-group">
               <input
@@ -98,17 +98,17 @@ export default class CreateGame extends Component {
                 onChange={this.onChange}
               />
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-dismiss="modal"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="btn btn-outline-primarybtn btn-outline-primary"
+                className="btn btn-outline-primarybtn btn-outline-primary"
               >
                 Save game
               </button>

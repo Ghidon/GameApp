@@ -20,10 +20,7 @@ class Profile extends Component {
   async componentDidMount() {
     if (localStorage.usertoken) {
       await this.setUserDetails();
-      this.setGameDetails();
-      //check games for a game with user email in either Creator or Player's Array
-      //If there is a Match, Show the name of the Game in Active Games section
-      //else show a message "No active Games yet"
+      this.setGameDetails();      
     } else {
       this.props.history.push(`/login`);
     }
@@ -65,9 +62,11 @@ class Profile extends Component {
             if (game.creator === this.state.email) {
               gameRoleDiv.classList.add("creator");
               role = "Creator";
+              //maybe add a role in the state?
             } else {
               gameRoleDiv.classList.add("player");
               role = "Player";
+              //maybe add a role in the state?cd 
             }
             gameNameLink.innerText = gameName;
             gameRoleDiv.innerText = role;
@@ -147,7 +146,7 @@ class Profile extends Component {
                 <div
                   className="modal fade"
                   id="createGameModal"
-                  tabindex="-1"
+                  tabIndex="-1"
                   role="dialog"
                   aria-labelledby="createGameModalTitle"
                   aria-hidden="true"
@@ -169,7 +168,7 @@ class Profile extends Component {
                     type="button"
                     className="btn btn-primary"
                     data-toggle="modal"
-                    data-target="#exampleModalCenter"
+                    data-target="#createGameModal"
                   >
                     Create a New Game
                   </button>
