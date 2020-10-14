@@ -175,7 +175,15 @@ def find_game_by_email(email):
     try:
         games = db.db.games
         creatordata = list(games.find({"creator": email}))
-        playerData = list(games.find({"players": email}))
+        playerData = []
+        for game in games.find():
+            print(game)
+            game_players = game.get('players')
+            for player in game_players:
+                player_email = player.get('email')
+                if player_email == email:
+                    playerData.append(game)
+        print(playerData)
         data = creatordata + playerData
 
         for game in data:
