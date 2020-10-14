@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import { findGameDetails } from "./GamesFunctions";
 import { findUser } from "../Account/UserFunctions";
 import AddPlayerToGame from "../Games/AddPlayerToGame";
@@ -15,6 +15,7 @@ export default class GameDetails extends Component {
       creator_name: "",
       game_name: "",
       players: [],
+      current_user: ""
     };
   }
 
@@ -22,9 +23,9 @@ export default class GameDetails extends Component {
     if (!localStorage.usertoken) {
       this.props.history.push(`/login`);
     } else {
-      // const token = localStorage.usertoken;
-      // const decoded = jwt_decode(token);
-      // this.setState({ creator: decoded.identity.email });
+      const token = localStorage.usertoken;
+      const decoded = jwt_decode(token);
+      this.setState({ current_user: decoded.identity.email });
       await this.getGame_Id();
     }
   }
@@ -86,6 +87,7 @@ export default class GameDetails extends Component {
   }
 
   render() {
+    const { current_user, creator } = this.state;
     return (
       <div className="container">
         <div className="row">
@@ -97,6 +99,9 @@ export default class GameDetails extends Component {
                 <div className="GameCreator">
                   Created by: {this.state.creator_name}
                 </div>
+                {/* Do not Show if user in not Creator */}
+                {current_user == creator ? (
+                  <div>
                 <button
                   type="button"
                   className="btn btn-outline-primary"
@@ -120,6 +125,8 @@ export default class GameDetails extends Component {
                     <AddPlayerToGame />
                   </div>
                 </div>
+                </div>) : (<div></div>)}
+                {/* Do not Show if user in not Creator */}
               </div>
             </div>
             <div>
