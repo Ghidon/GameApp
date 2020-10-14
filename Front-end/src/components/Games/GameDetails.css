@@ -12,6 +12,31 @@
   padding: 20px;
 }
 
+.removePlayer {
+  width: 20px;
+  height: 20px;
+  background-color: grey;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  float: right;
+  outline: none;
+  font-size: 12px;
+  /* font-weight: bold; */
+  text-align: center;
+  color: white;
+}
+.removePlayer:hover {
+  background-color: rgba(255, 0, 0, 0.795);
+  box-shadow: 0 3px #999;
+}
+
+.removePlayer:active {
+  /* background-color: rgba(255, 0, 0, 0.795); */
+  box-shadow: 0 1px #666;
+  transform: translateY(4px);
+}
+
 .playerImage {
   background-color: grey;
   height: 150px;

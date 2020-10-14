@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import jwt_decode from "jwt-decode";
-import { findGameDetails } from "./GamesFunctions";
+import { findGameDetails, removeUserFromGame } from "./GamesFunctions";
 import { findUser } from "../Account/UserFunctions";
 import AddPlayerToGame from "../Games/AddPlayerToGame";
 import "./GameDetails.css";
@@ -11,12 +11,16 @@ export default class GameDetails extends Component {
     this.state = {
       creationDate: "",
       creationTime: "",
+      error: false,
+      messageError: "",
       creator: "",
       creator_name: "",
       game_name: "",
+      gameID: "",
       players: [],
       current_user: ""
     };
+    this.playerLeaveGame = this.playerLeaveGame.bind(this);
   }
 
   async componentDidMount() {
@@ -33,6 +37,7 @@ export default class GameDetails extends Component {
   getGame_Id() {
     let urlParams = new URLSearchParams(window.location.search);
     let game_Id = urlParams.get("ID");
+    this.setState({ gameID: game_Id})
     findGameDetails(game_Id).then((res) => {
       if (res === undefined) {
         console.log("error: Game was not found");
@@ -63,9 +68,17 @@ export default class GameDetails extends Component {
       );
       let playerImageDiv = document.createElement("div");
       playerImageDiv.classList.add("playerImage");
+
+      // let removePlayer = document.createElement('div')
+      // removePlayer.classList.add("removePlayer")
+      // removePlayer.innerText = "X"
+
+      // playerImageDiv.appendChild(removePlayer)
+      
       let playerNameDiv = document.createElement("div");
       playerNameDiv.classList.add("text-center");
       playerNameDiv.innerText = player.first_name;
+
       let playerWrapper = document.createElement("div");
       playerWrapper.classList.add("d-flex", "flex-column", "playerWrapper");
       playerWrapper.appendChild(playerImageDiv);
@@ -86,8 +99,32 @@ export default class GameDetails extends Component {
     });
   }
 
+  showErrorMessage(data, status) {
+    this.setState({
+      error: true,
+      messageError: data.message,      
+    });
+  }
+
+  playerLeaveGame() {
+    let playerEmail = this.state.current_user
+    let game_Id = this.state.gameID
+    console.log(game_Id);
+    removeUserFromGame(
+      game_Id, 
+      playerEmail, 
+      this.showErrorMessage.bind(this))
+    .then((res) => {
+      if (res === undefined) {
+        console.log("error: Game was not updated");
+      } else {
+        this.setState({ messageSuccess: res.data.message });
+      }
+    });
+  }
+
   render() {
-    const { current_user, creator } = this.state;
+    const { current_user, creator, error, messageError, messageSuccess } = this.state;
     return (
       <div className="container">
         <div className="row">
@@ -100,7 +137,7 @@ export default class GameDetails extends Component {
                   Created by: {this.state.creator_name}
                 </div>
                 {/* Do not Show if user in not Creator */}
-                {current_user == creator ? (
+                {current_user === creator ? (
                   <div>
                 <button
                   type="button"
@@ -125,12 +162,24 @@ export default class GameDetails extends Component {
                     <AddPlayerToGame />
                   </div>
                 </div>
-                </div>) : (<div></div>)}
+                </div>) : ( 
+                <button type="button" onClick={this.playerLeaveGame} className="btn btn-outline-primary">Leave this Game</button>
+                )}
                 {/* Do not Show if user in not Creator */}
               </div>
             </div>
             <div>
+            {error ? (
+            <div className="alert alert-light" role="alert">
+              {messageError}
+            </div>
+          ) : (
+            <div className="alert alert-light" role="alert">
+              {messageSuccess}
+            </div>
+          )}
               <h5>Players</h5>
+              
               <div id="playersList"></div>
             </div>
           </div>

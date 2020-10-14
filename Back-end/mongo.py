@@ -232,7 +232,7 @@ def find_game_by_id(_id):
 ##############
 
 
-@app.route("/games/details/<game_id>/<user_email>", methods=["PATCH"])
+@app.route("/games/details/<game_id>/add/<user_email>", methods=["PATCH"])
 def assign_player_to_game(game_id, user_email):
     try:
         games = db.db.games
@@ -274,6 +274,57 @@ def assign_player_to_game(game_id, user_email):
                     return Response(response=json.dumps({"message": "Game updated"}), status=200, mimetype="application/json")
                 else:
                     return Response(response=json.dumps({"message": "nothing to update"}), status=200, mimetype="application/json")
+
+    except Exception as ex:
+        print("****************")
+        print(ex)
+        print("****************")
+        return Response(response=json.dumps({"message": "could not update"}), status=500, mimetype="application/json")
+
+##############
+
+
+@app.route("/games/details/<game_id>/remove/<player_email>", methods=["PATCH"])
+def remove_player_from_game(game_id, player_email):
+    try:
+        games = db.db.games  # all games
+        users = db.db.users  # all users
+
+        # the specific game
+        game = list(games.find({"_id": ObjectId(game_id)}))
+        game_players = game[0].get('players')  # players in the game
+        email_list = []  # list of player's emails
+        # creator_email = ""
+
+        for i in game_players:
+            email_list.append(i["email"])
+
+        # for i in game:
+        #     creator_email = i["creator"]
+
+        if (player_email not in email_list):
+            return Response(
+                response=json.dumps(
+                    {"message": "The user is not a player anymore"}),
+                status=400,
+                mimetype="application/json"
+            )
+        else:
+            player = users.find_one({"email": player_email})
+            print(player)
+            game_players.remove(player)
+            response = games.update_one(
+                {"_id": ObjectId(game_id)},
+                {"$set": {
+                    "last_update": datetime.utcnow(),
+                    "players": game_players
+                }
+                }
+            )
+            if response.modified_count == 1:
+                return Response(response=json.dumps({"message": "User have been removed"}), status=200, mimetype="application/json")
+            else:
+                return Response(response=json.dumps({"message": "nothing to update"}), status=200, mimetype="application/json")
 
     except Exception as ex:
         print("****************")
