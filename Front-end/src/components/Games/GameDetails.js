@@ -51,15 +51,16 @@ export default class GameDetails extends Component {
           creationDate: date[0],
           creationTime: date[1],
         });
-        this.setPlayersList();
+        this.setPlayersList(game.players);
         this.setCreatordetails();
       }
     });
   }
 
-  setPlayersList() {
-    const myDiv = document.getElementById("playersList");    
-    this.state.players.forEach((player) => {
+  setPlayersList(players) {
+    const myDiv = document.getElementById("playersList"); 
+    console.log(players)   
+    players.forEach((player) => {
       myDiv.classList.add(
         "mainDiv",
         "d-flex",
@@ -67,24 +68,40 @@ export default class GameDetails extends Component {
       );
       let playerImageDiv = document.createElement("div");
       playerImageDiv.classList.add("playerImage");
+      let pEmail = player.email
 
         if (this.state.current_user === this.state.creator) {
-      let removePlayer = document.createElement('span')
-      removePlayer.innerText = "X"
-      removePlayer.onclick = () => {
+          let con = document.createElement('div')
+          con.classList.add("con-tooltip","right")
+          let removePlayer = document.createElement('span')
+          removePlayer.innerText = "X"
+          removePlayer.onclick = () => {
         removeUserFromGame(
           this.state.gameID, 
-          player.email, 
+          pEmail, 
           this.showErrorMessage.bind(this)).then((res) => {
             if (res === undefined) {
               console.log("error: Game was not updated");
             } else {
               this.setState({ messageSuccess: res.data.message });
             }
-          })};
-      removePlayer.classList.add("removePlayer")
-      playerImageDiv.appendChild(removePlayer)
-        }
+          })
+          .then(document.getElementById("playersList").innerHTML = "")
+          .then(this.setState({ players: [...this.state.players.filter(player => player.email !== pEmail )]}))
+          
+          .then(this.setPlayersList(this.state.players))
+        };          
+          
+          removePlayer.classList.add("removePlayer")
+          let tool = document.createElement("div")
+          tool.classList.add("tooltip")
+          let orientation = document.createElement("span")
+          orientation.innerText = "Remove player"
+          tool.appendChild(orientation)
+          con.appendChild(removePlayer)
+          con.appendChild(tool)
+          playerImageDiv.appendChild(con)
+          }
       
       let playerNameDiv = document.createElement("div");
       playerNameDiv.classList.add("text-center");
@@ -131,7 +148,8 @@ export default class GameDetails extends Component {
       } else {
         this.setState({ messageSuccess: res.data.message });
       }
-    });
+    })
+    .then(this.componentDidMount());
   }
 
   render() {
