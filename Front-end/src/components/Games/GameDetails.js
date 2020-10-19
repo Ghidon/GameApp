@@ -63,17 +63,28 @@ export default class GameDetails extends Component {
       myDiv.classList.add(
         "mainDiv",
         "d-flex",
-        "flex-wrap"
-        // "justify-content-between"
+        "flex-wrap"        
       );
       let playerImageDiv = document.createElement("div");
       playerImageDiv.classList.add("playerImage");
 
-      // let removePlayer = document.createElement('div')
-      // removePlayer.classList.add("removePlayer")
-      // removePlayer.innerText = "X"
-
-      // playerImageDiv.appendChild(removePlayer)
+        if (this.state.current_user === this.state.creator) {
+      let removePlayer = document.createElement('span')
+      removePlayer.innerText = "X"
+      removePlayer.onclick = () => {
+        removeUserFromGame(
+          this.state.gameID, 
+          player.email, 
+          this.showErrorMessage.bind(this)).then((res) => {
+            if (res === undefined) {
+              console.log("error: Game was not updated");
+            } else {
+              this.setState({ messageSuccess: res.data.message });
+            }
+          })};
+      removePlayer.classList.add("removePlayer")
+      playerImageDiv.appendChild(removePlayer)
+        }
       
       let playerNameDiv = document.createElement("div");
       playerNameDiv.classList.add("text-center");
@@ -163,7 +174,12 @@ export default class GameDetails extends Component {
                   </div>
                 </div>
                 </div>) : ( 
-                <button type="button" onClick={this.playerLeaveGame} className="btn btn-outline-primary">Leave this Game</button>
+                <button 
+                type="button" 
+                onClick={this.playerLeaveGame} 
+                className="btn btn-outline-danger">
+                  Leave this Game
+                  </button>
                 )}
                 {/* Do not Show if user in not Creator */}
               </div>

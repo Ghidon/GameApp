@@ -177,13 +177,13 @@ def find_game_by_email(email):
         creatordata = list(games.find({"creator": email}))
         playerData = []
         for game in games.find():
-            print(game)
+            # print(game)
             game_players = game.get('players')
             for player in game_players:
                 player_email = player.get('email')
                 if player_email == email:
                     playerData.append(game)
-        print(playerData)
+        # print(playerData)
         data = creatordata + playerData
 
         for game in data:
@@ -311,7 +311,7 @@ def remove_player_from_game(game_id, player_email):
             )
         else:
             player = users.find_one({"email": player_email})
-            print(player)
+            # print(player)
             game_players.remove(player)
             response = games.update_one(
                 {"_id": ObjectId(game_id)},
