@@ -334,6 +334,22 @@ def remove_player_from_game(game_id, player_email):
 
 ##############
 
+@app.route("/games/delete/<game_id>", methods=["DELETE"])
+def remove_game(game_id):
+    try:
+        dbResponse = db.db.games.delete_one({"_id": ObjectId(game_id)})
+        if dbResponse.deleted_count == 1:
+            return Response(response=json.dumps({"message": "Game have been removed"}), status=200, mimetype="application/json")
+        return Response(response=json.dumps({"message": "Game not found"}), status=200, mimetype="application/json")
+
+    except Exception as ex:
+        print("****************")
+        print(ex)
+        print("****************")
+        return Response(response=json.dumps({"message": "Game could not be removed"}), status=500, mimetype="application/json")
+
+##############
+
 
 if __name__ == '__main__':
     app.run(port=8000)

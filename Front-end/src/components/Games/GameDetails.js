@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import jwt_decode from "jwt-decode";
-import { findGameDetails, removeUserFromGame } from "./GamesFunctions";
+import {
+  findGameDetails,
+  removeUserFromGame,
+  removeGame,
+} from "./GamesFunctions";
 import { findUser } from "../Account/UserFunctions";
 import AddPlayerToGame from "../Games/AddPlayerToGame";
 import "./GameDetails.css";
@@ -18,9 +22,10 @@ export default class GameDetails extends Component {
       game_name: "",
       gameID: "",
       players: [],
-      current_user: ""
+      current_user: "",
     };
     this.playerLeaveGame = this.playerLeaveGame.bind(this);
+    this.deleteThisGame = this.deleteThisGame.bind(this);
   }
 
   async componentDidMount() {
@@ -37,7 +42,7 @@ export default class GameDetails extends Component {
   getGame_Id() {
     let urlParams = new URLSearchParams(window.location.search);
     let game_Id = urlParams.get("ID");
-    this.setState({ gameID: game_Id})
+    this.setState({ gameID: game_Id });
     findGameDetails(game_Id).then((res) => {
       if (res === undefined) {
         console.log("error: Game was not found");
@@ -58,51 +63,57 @@ export default class GameDetails extends Component {
   }
 
   setPlayersList(players) {
-    const myDiv = document.getElementById("playersList"); 
-    console.log(players)   
+    const myDiv = document.getElementById("playersList");
+    // console.log(players);
     players.forEach((player) => {
-      myDiv.classList.add(
-        "mainDiv",
-        "d-flex",
-        "flex-wrap"        
-      );
+      myDiv.classList.add("mainDiv", "d-flex", "flex-wrap");
       let playerImageDiv = document.createElement("div");
       playerImageDiv.classList.add("playerImage");
-      let pEmail = player.email
+      let pEmail = player.email;
 
-        if (this.state.current_user === this.state.creator) {
-          let con = document.createElement('div')
-          con.classList.add("con-tooltip","right")
-          let removePlayer = document.createElement('span')
-          removePlayer.innerText = "X"
-          removePlayer.onclick = () => {
-        removeUserFromGame(
-          this.state.gameID, 
-          pEmail, 
-          this.showErrorMessage.bind(this)).then((res) => {
-            if (res === undefined) {
-              console.log("error: Game was not updated");
-            } else {
-              this.setState({ messageSuccess: res.data.message });
-            }
-          })
-          .then(document.getElementById("playersList").innerHTML = "")
-          .then(this.setState({ players: [...this.state.players.filter(player => player.email !== pEmail )]}))
-          
-          .then(this.setPlayersList(this.state.players))
-        };          
-          
-          removePlayer.classList.add("removePlayer")
-          let tool = document.createElement("div")
-          tool.classList.add("tooltip")
-          let orientation = document.createElement("span")
-          orientation.innerText = "Remove player"
-          tool.appendChild(orientation)
-          con.appendChild(removePlayer)
-          con.appendChild(tool)
-          playerImageDiv.appendChild(con)
-          }
-      
+      if (this.state.current_user === this.state.creator) {
+        let con = document.createElement("div");
+        con.classList.add("con-tooltip", "right");
+        let removePlayer = document.createElement("span");
+        removePlayer.innerText = "X";
+        removePlayer.onclick = () => {
+          removeUserFromGame(
+            this.state.gameID,
+            pEmail,
+            this.showErrorMessage.bind(this)
+          )
+            .then((res) => {
+              if (res === undefined) {
+                console.log("error: Game was not updated");
+              } else {
+                this.setState({ messageSuccess: res.data.message });
+              }
+            })
+            .then((document.getElementById("playersList").innerHTML = ""))
+            .then(
+              this.setState({
+                players: [
+                  ...this.state.players.filter(
+                    (player) => player.email !== pEmail
+                  ),
+                ],
+              })
+            )
+
+            .then(this.setPlayersList(this.state.players));
+        };
+
+        removePlayer.classList.add("removePlayer");
+        let tool = document.createElement("div");
+        tool.classList.add("tooltip");
+        let orientation = document.createElement("span");
+        orientation.innerText = "Remove player";
+        tool.appendChild(orientation);
+        con.appendChild(removePlayer);
+        con.appendChild(tool);
+        playerImageDiv.appendChild(con);
+      }
+
       let playerNameDiv = document.createElement("div");
       playerNameDiv.classList.add("text-center");
       playerNameDiv.innerText = player.first_name;
@@ -121,7 +132,7 @@ export default class GameDetails extends Component {
       if (res === undefined) {
         console.log("error: Creator was not found");
       } else {
-        // res.data[0] = whole creator details        
+        // res.data[0] = whole creator details
         this.setState({ creator_name: res.data[0].first_name });
       }
     });
@@ -130,30 +141,46 @@ export default class GameDetails extends Component {
   showErrorMessage(data, status) {
     this.setState({
       error: true,
-      messageError: data.message,      
+      messageError: data.message,
     });
   }
 
   playerLeaveGame() {
-    let playerEmail = this.state.current_user
-    let game_Id = this.state.gameID
+    let playerEmail = this.state.current_user;
+    let game_Id = this.state.gameID;
     console.log(game_Id);
-    removeUserFromGame(
-      game_Id, 
-      playerEmail, 
-      this.showErrorMessage.bind(this))
-    .then((res) => {
+    removeUserFromGame(game_Id, playerEmail, this.showErrorMessage.bind(this))
+      .then((res) => {
+        if (res === undefined) {
+          console.log("error: Game was not updated");
+        } else {
+          this.setState({ messageSuccess: res.data.message });
+        }
+      })
+      .then(this.componentDidMount());
+  }
+
+  deleteThisGame() {
+    let game_Id = this.state.gameID;
+    console.log(game_Id);
+    removeGame(game_Id, this.showErrorMessage.bind(this)).then((res) => {
       if (res === undefined) {
         console.log("error: Game was not updated");
       } else {
         this.setState({ messageSuccess: res.data.message });
       }
-    })
-    .then(this.componentDidMount());
+    });
+    this.props.history.push(`/profile`);
   }
 
   render() {
-    const { current_user, creator, error, messageError, messageSuccess } = this.state;
+    const {
+      current_user,
+      creator,
+      error,
+      messageError,
+      messageSuccess,
+    } = this.state;
     return (
       <div className="container">
         <div className="row">
@@ -168,52 +195,62 @@ export default class GameDetails extends Component {
                 {/* Do not Show if user in not Creator */}
                 {current_user === creator ? (
                   <div>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary"
-                  data-toggle="modal"
-                  data-target="#addPlayerToGameModal"
-                >
-                  Add a Player
-                </button>
-                <div
-                  className="modal fade"
-                  id="addPlayerToGameModal"
-                  tabIndex="-1"
-                  role="dialog"
-                  aria-labelledby="addPlayerToGameModalTitle"
-                  aria-hidden="true"
-                >
-                  <div
-                    className="modal-dialog modal-dialog-centered"
-                    role="document"
-                  >
-                    <AddPlayerToGame />
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={this.deleteThisGame}
+                    >
+                      Delete Game
+                    </button>
+                    <button
+                      type="button"
+                      style={{ marginLeft: "10px" }}
+                      className="btn btn-outline-primary"
+                      data-toggle="modal"
+                      data-target="#addPlayerToGameModal"
+                    >
+                      Add a Player
+                    </button>
+                    <div
+                      className="modal fade"
+                      id="addPlayerToGameModal"
+                      tabIndex="-1"
+                      role="dialog"
+                      aria-labelledby="addPlayerToGameModalTitle"
+                      aria-hidden="true"
+                    >
+                      <div
+                        className="modal-dialog modal-dialog-centered"
+                        role="document"
+                      >
+                        <AddPlayerToGame />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                </div>) : ( 
-                <button 
-                type="button" 
-                onClick={this.playerLeaveGame} 
-                className="btn btn-outline-danger">
-                  Leave this Game
+                ) : (
+                  <button
+                    type="button"
+                    onClick={this.playerLeaveGame}
+                    className="btn btn-outline-danger"
+                  >
+                    Leave this Game
                   </button>
                 )}
                 {/* Do not Show if user in not Creator */}
               </div>
             </div>
             <div>
-            {error ? (
-            <div className="alert alert-light" role="alert">
-              {messageError}
-            </div>
-          ) : (
-            <div className="alert alert-light" role="alert">
-              {messageSuccess}
-            </div>
-          )}
+              {error ? (
+                <div className="alert alert-light" role="alert">
+                  {messageError}
+                </div>
+              ) : (
+                <div className="alert alert-light" role="alert">
+                  {messageSuccess}
+                </div>
+              )}
               <h5>Players</h5>
-              
+
               <div id="playersList"></div>
             </div>
           </div>
