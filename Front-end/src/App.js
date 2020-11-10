@@ -8,6 +8,7 @@ import Register from "./components/Account/Register";
 import Profile from "./components/Account/Profile";
 import CreateGame from "./components/Games/CreateGame";
 import GameDetails from "./components/Games/GameDetails";
+import { GameDetails2 } from "./components/Games/GameDetails2";
 
 class App extends Component {
   render() {
@@ -21,7 +22,8 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/games/new" component={CreateGame} />
-            <Route exact path="/games/details/" component={GameDetails} />
+            {/* <Route exact path="/games/details/" component={GameDetails} /> */}
+            <Route exact path="/games/details/" component={GameDetails2} />
           </div>
         </div>
       </Router>

@@ -64,7 +64,6 @@ export default class GameDetails extends Component {
 
   setPlayersList(players) {
     const myDiv = document.getElementById("playersList");
-    // console.log(players);
     players.forEach((player) => {
       myDiv.classList.add("mainDiv", "d-flex", "flex-wrap");
       let playerImageDiv = document.createElement("div");
@@ -149,15 +148,20 @@ export default class GameDetails extends Component {
     let playerEmail = this.state.current_user;
     let game_Id = this.state.gameID;
     console.log(game_Id);
-    removeUserFromGame(game_Id, playerEmail, this.showErrorMessage.bind(this))
-      .then((res) => {
-        if (res === undefined) {
-          console.log("error: Game was not updated");
-        } else {
-          this.setState({ messageSuccess: res.data.message });
-        }
-      })
-      .then(this.componentDidMount());
+    removeUserFromGame(
+      game_Id,
+      playerEmail,
+      this.showErrorMessage.bind(this)
+    ).then((res) => {
+      if (res === undefined) {
+        console.log("error: Game was not updated");
+      } else {
+        this.setState({ messageSuccess: res.data.message });
+      }
+    });
+    const token = localStorage.usertoken;
+    const decoded = jwt_decode(token);
+    this.setState({ current_user: decoded.identity.email });
   }
 
   deleteThisGame() {

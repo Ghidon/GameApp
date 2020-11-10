@@ -346,7 +346,7 @@ def remove_game(game_id):
         print("****************")
         print(ex)
         print("****************")
-        return Response(response=json.dumps({"message": "Game could not be removed"}), status=500, mimetype="application/json")
+        return Response(response=json.dumps({"message": "Game could not be remove"}), status=500, mimetype="application/json")
 
 ##############
 
