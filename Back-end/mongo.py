@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json, Response
+from flask import Flask, jsonify, request, json, Response, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
@@ -347,6 +347,28 @@ def remove_game(game_id):
         print(ex)
         print("****************")
         return Response(response=json.dumps({"message": "Game could not be remove"}), status=500, mimetype="application/json")
+
+##############
+
+@app.route('/users/image/', methods=["POST"])
+def upload():
+    print(request.data)
+    images = db.db.images
+    image = json.loads(request.data)
+   
+    print(image)
+    
+
+#     images = db.db.images
+#    json.loads
+#    parse to binary
+#     image = {
+#         'name': request.get_json()['name'],
+#         'pic': request.get_json()['pic']
+#         }
+    # print(request.get_json()["pic"])
+    # images.insert_one(image)
+    return jsonify(message="Image added successfully"), 201
 
 ##############
 

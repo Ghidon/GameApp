@@ -11,7 +11,7 @@ export async function register(newUser, showErrorMessage, hideErrorMessage) {
       password: newUser.password,
     })
     .then(hideErrorMessage())
-    .catch(function(error) {
+    .catch(function (error) {
       if (error.response) {
         showErrorMessage(error.response.data, error.response.status);
         console.log(error.response.data);
@@ -74,6 +74,40 @@ export async function findUser(email) {
       console.log("Error", error.message);
     }
   });
+  return response;
+}
+
+// ##############################
+
+export async function uploadImage(file) {
+  const image = {
+    name: file.name,
+    pic: { file },
+  };
+
+  console.log(image);
+
+  // const imageJson = file.toString();
+  // console.log(imageJson);
+
+  const response = await axios
+    .post("users/image/", {
+      name: file.name,
+      pic: Buffer.from(file.toString()),
+      // pic: file,
+    })
+    // .then(hideErrorMessage())
+    .catch(function (error) {
+      if (error.response) {
+        // showErrorMessage(error.response.data, error.response.status);
+        console.log(error.response.data);
+        console.log(error.response.status);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log("Error", error.message);
+      }
+    });
   return response;
 }
 
